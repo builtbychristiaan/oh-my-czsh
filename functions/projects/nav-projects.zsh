@@ -1,7 +1,6 @@
-function run() {
+function nav() {
   local project_alias="$1"
   local project_path
-  local project_commands
 
   if [[ -z "$project_alias" ]]; then
     echo "${RED}Error:${NC} No project alias provided"
@@ -14,9 +13,8 @@ function run() {
   fi
 
   project_path=$(get_project_path "$project_alias")
-  project_commands=$(get_project_commands "$project_alias")
   project_path="${project_path/#\~/$HOME}"
 
-  cd "$project_path" && eval "$project_commands"
+  cd "$project_path"
 }
-compdef _projects_autocompletion run
+compdef _projects_autocompletion nav
