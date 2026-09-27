@@ -3,11 +3,11 @@
 # installs dependencies, then runs the interactive setup wizard.
 #
 # Usage:
-#   create-project [project-name] [target-parent-dir]
+#   init-project [project-name] [target-parent-dir]
 #
 # Examples:
-#   create-project my-app
-#   create-project my-app ~/projects
+#   init-project my-app
+#   init-project my-app ~/projects
 
 function init-project() {
   local starter_repo="${STARTER_REPO:-https://github.com/builtbychristiaan/angular-express-starter.git}"
@@ -78,14 +78,19 @@ function init-project() {
     return 1
   fi
 
+  echo "${BLUE}→ Registering project for nav/run${NC}"
+  if ! register_project "$project_name" "$project_dir" "npm run dev"; then
+    echo "${YELLOW}Warning:${NC} Project was created but was not added to projects.config.zsh."
+  fi
+
   echo ""
   echo "${GREEN}✓ Project ready at ${project_dir}${NC}"
   echo ""
   echo "Next steps:"
-  echo "  cd ${project_dir}"
+  echo "  nav ${project_name}"
   echo "  docker compose up -d db"
   echo "  npm run db:migrate -w server"
   echo "  npm run db:seed -w server -- --confirm"
-  echo "  npm run dev"
+  echo "  run ${project_name}"
   echo ""
 }
